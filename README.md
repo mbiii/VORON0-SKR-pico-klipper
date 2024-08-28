@@ -1,4 +1,17 @@
-# voron-0-pico-klipper
-Voron v0.2r1 with a BTT Pico (TMC2209) with klipper. Connected via Raspberry Pi 0w2 using KIAUH
+# Steps to Flash BTT SKR Pico v1.0 with Canboot & Klipper in UART mode
 
-# Steps to Flash BTT SKR Pico v1.0 ( RP2040 ) with Canboot & Klipper
+## Install CanBoot if you haven't already
+- Run the following from your klipper host to copy the canboot github files
+```
+cd ~/
+git clone https://github.com/Arksine/CanBoot
+```
+
+- Add Canboot to the moonraker update manager by adding the following lines to your moonraker.cof file.
+```
+[update_manager CanBoot]
+type: git_repo
+path: ~/CanBoot
+origin: https://github.com/Arksine/CanBoot.git
+is_system_service: False
+```
