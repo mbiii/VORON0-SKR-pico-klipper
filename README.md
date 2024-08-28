@@ -43,12 +43,17 @@ is_system_service: False
 
 ![Canboot in UART mode](/img/skr_pico_canboot_uart.png)
 
+- Press Q to quit, and Y to save
+
 - Run make
   ```
   make -j 4
   ``` 
 - Connect the Pico by USB to the Klipper Host
 - Install boot jumper on the SKR Pico and press the reset button
+
+![SKR Pico boot jumpers](/img/skr-pico-boot-jumpers.png)
+
 - Mount the Pico file system
   ```
   sudo mount /dev/sda1 /mnt
@@ -63,6 +68,51 @@ is_system_service: False
 
   - This take a minute or so.
 
-- When the /mnt unmounts remove the boot jumper. 
+- When the /mnt unmounts remove the boot jumpers. 
 
-- Reboot and continue to the next phase.. 
+- Shutdown the host and disconnect USB cable from the Pico.
+
+## Connect SKR Pico over UART to Raspberry Pi
+
+- Connect the UART cable between GPIO headers of the Raspberry Pi and the Raspberry Pi headers on the SKR Pico board.
+
+![SKR Pico UART connection](/img/skr-pico-uart-connection.png)
+
+### Flashing Klpper via UART the first time
+
+- SSH into the Klipper host and CD to klipper
+  ```
+  cd ~/klipper/
+  ```
+
+- Run Make Clean
+  ```
+  make clean
+  ```
+
+- Run Make Menuconfig
+  
+  ```
+  make menuconfig
+  ```
+
+- Settings
+    - MCU Raspberry Pi RP2040
+    - bootloader offset 16Kib Bootloader
+    - Com interface Serial on UART
+
+
+![Klipper UART](/img/skr_pico_klipper_canbus_uart.png)    
+  
+ - Run make
+  ```
+  make -j 4
+  ``` 
+
+ - Connect the SKR Pico UART pins to the klipper host.
+ - Flash the klipper.bin file to the SKR Pico
+  ```
+  python3 ~/CanBoot/scripts/flash_can.py -f ~/klipper/out/klipper.bin -d  /dev/ttyAMA0
+  ```
+
+- Reboot and your Pico should come back up in Serial UART mode.
