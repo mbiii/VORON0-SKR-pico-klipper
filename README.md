@@ -1,7 +1,12 @@
 # Steps to Flash BTT SKR Pico v1.0 with Canboot & Klipper in UART mode
 
-## Install CanBoot if you haven't already
-- Run the following from your klipper host to copy the canboot github files
+## Install Pyhton3 & CanBoot if you haven't already
+- Run the following from your klipper host to install Python3
+```
+sudo apt install python3 python3-pip python3-serial -y
+```
+
+- Now copy the canboot github files to your klipper host
 ```
 cd ~/
 git clone https://github.com/Arksine/CanBoot
@@ -40,6 +45,7 @@ is_system_service: False
     - MCU Raspberry Pi RP2040
     - Build CanBoot deployment 16Kib Bootloader
     - Com interface Serial on UART
+    - 1000000 baud rate
 
 ![Canboot in UART mode](/img/skr_pico_canboot_uart.png)
 
@@ -100,6 +106,7 @@ is_system_service: False
     - MCU Raspberry Pi RP2040
     - bootloader offset 16Kib Bootloader
     - Com interface Serial on UART
+    - 1000000 baud rate
 
 
 ![Klipper UART](/img/skr_pico_klipper_canbus_uart.png)    
@@ -112,7 +119,19 @@ is_system_service: False
  - Connect the SKR Pico UART pins to the klipper host.
  - Flash the klipper.bin file to the SKR Pico
   ```
-  python3 ~/CanBoot/scripts/flash_can.py -f ~/klipper/out/klipper.bin -d  /dev/ttyAMA0
+  python3 ~/CanBoot/scripts/flash_can.py -f ~/klipper/out/klipper.bin -d  /dev/ttyAMA0 -b 1000000
   ```
 
 - Reboot and your Pico should come back up in Serial UART mode.
+
+### Flashing again after Canboot and klipper has been installed
+
+ - Press the SKR Pico reset button twice to enter the Canoot bootloader. 
+ 
+ - Run the CanBoot flash_can script to flash the new klipper build. 
+
+  ```
+  python3 ~/CanBoot/scripts/flash_can.py -f ~/klipper/out/klipper.bin -d /dev/ttyAMA0 -b 1000000
+  ```
+ 
+  - Reboot 
